@@ -6,14 +6,23 @@ use yii\base\Model;
 
 class Activity extends Model
 {
-    private $name;
-    private $date; // format Y-m-d h:m:s (1999-02-05 23:45:12)
-    private $parsedDate;
-    private $duration;
-    private $authorID;
-    private $description;
-    private $isRepeatable;
-    private $isBlocking;
+    public $name;
+    public $date; // format Y-m-d h:m:s (1999-02-05 23:45:12)
+    public $parsedDate;
+    public $duration;
+    public $authorID;
+    public $description;
+    public $isRepeatable;
+    public $isBlocking;
+
+    public function rules()
+    {
+        return [
+            [['name', 'date', 'duration', 'description'], 'required'],
+            [['name', 'date', 'duration', 'description'], 'string'],
+            [['isRepeatable', 'isBlocking'], 'boolean']
+        ];
+    }
 
     public function attributeLabels()
     {
