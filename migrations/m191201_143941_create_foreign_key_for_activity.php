@@ -12,7 +12,7 @@ class m191201_143941_create_foreign_key_for_activity extends Migration
      */
     public function safeUp()
     {
-        $this->addForeignKey('fk_activity_users_user_id', 'activity', 'author_id', 'users', 'id');
+        $this->addForeignKey('fk_activity_users_user_id', 'activity', 'user_id', 'user', 'id');
     }
 
     /**

@@ -15,8 +15,8 @@ use yii\helpers\Url;
     ]); ?>
         <div class="form-group">
             <?php echo $form->field($model, 'name')->textInput();
-            echo $form->field($model, 'date')->textInput();
-            echo $form->field($model, 'duration')->textInput();
+            echo $form->field($model, 'startedAt')->textInput();
+            echo $form->field($model, 'finishedAt')->textInput();
             echo $form->field($model, 'description')->textArea();
             echo $form->field($model, 'isRepeatable')->checkbox();
             echo $form->field($model, 'isBlocking')->checkbox();

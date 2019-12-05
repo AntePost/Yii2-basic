@@ -2,62 +2,73 @@
 
 namespace app\models;
 
-use yii\base\Model;
+use Yii;
 
-class Activity extends Model
+/**
+ * This is the model class for table "activity".
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $started_at
+ * @property string $finished_at
+ * @property int $user_id
+ * @property string $description
+ * @property int $is_repeatable
+ * @property int $is_blocking
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ * @property User $user
+ */
+class Activity extends \yii\db\ActiveRecord
 {
-    public $name;
-    public $date; // format Y-m-d h:m:s (1999-02-05 23:45:12)
-    public $parsedDate;
-    public $duration;
-    public $authorID;
-    public $description;
-    public $isRepeatable;
-    public $isBlocking;
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'activity';
+    }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['name', 'date', 'duration', 'description'], 'required'],
-            [['name', 'date', 'duration', 'description'], 'string'],
-            [['isRepeatable', 'isBlocking'], 'boolean']
+            [['name'], 'required'],
+            [['started_at', 'finished_at', 'created_at', 'updated_at'], 'safe'],
+            [['user_id', 'is_repeatable', 'is_blocking'], 'integer'],
+            [['name'], 'string', 'max' => 255],
+            [['description'], 'string', 'max' => 1023],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
-            'name' => 'Activity name',
-            'date' => 'Activity date',
-            'duration' => 'Activity duration',
-            'authorID' => 'Author ID',
-            'description' => 'Activity description',
-            'isRepeatable' => 'Can be repeated',
-            'isBlocking' => 'No other activities in that time slot'
+            'id' => 'ID',
+            'name' => 'Name',
+            'started_at' => 'Started At',
+            'finished_at' => 'Finished At',
+            'user_id' => 'User ID',
+            'description' => 'Description',
+            'is_repeatable' => 'Is Repeatable',
+            'is_blocking' => 'Is Blocking',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 
-    public function changeName($newName)
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
     {
-        $this->name = $newName;
-
-        if ($this->name === $newName) {
-            return 'Ok';
-        } else {
-            return 'Error';
-        }
-    }
-
-    public function parseDate()
-    {
-        preg_match('(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})', $this->date, $matches);
-        $this->parsedDate = array(
-            'year' => $matches[1],
-            'month' => $matches[2],
-            'day' => $matches[3],
-            'hour' => $matches[4],
-            'minute' => $matches[5],
-            'second' => $matches[6]
-        );
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }
