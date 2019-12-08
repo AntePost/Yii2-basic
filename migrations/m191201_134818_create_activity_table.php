@@ -15,9 +15,9 @@ class m191201_134818_create_activity_table extends Migration
         $this->createTable('{{%activity}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
-            'date' => $this->datetime(),
-            'duration' => $this->datetime(),
-            'author_id' => $this->integer(),
+            'started_at' => $this->datetime(),
+            'finished_at' => $this->datetime(),
+            'user_id' => $this->integer(),
             'description' => $this->string(1023),
             'is_repeatable' => $this->boolean(),
             'is_blocking' => $this->boolean(),
