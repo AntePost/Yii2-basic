@@ -3,20 +3,21 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "activity".
  *
  * @property int $id
  * @property string $name
- * @property string $started_at
- * @property string $finished_at
+ * @property int $started_at
+ * @property int $finished_at
  * @property int $user_id
  * @property string $description
  * @property int $is_repeatable
  * @property int $is_blocking
- * @property string $created_at
- * @property string $updated_at
+ * @property int $created_at
+ * @property int $updated_at
  *
  * @property User $user
  */
@@ -30,6 +31,18 @@ class Activity extends \yii\db\ActiveRecord
         return 'activity';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => time()
+            ]
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,8 +50,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['started_at', 'finished_at', 'created_at', 'updated_at'], 'safe'],
-            [['user_id', 'is_repeatable', 'is_blocking'], 'integer'],
+            [['started_at', 'finished_at', 'user_id', 'is_repeatable', 'is_blocking', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 1023],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],

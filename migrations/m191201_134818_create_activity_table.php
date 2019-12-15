@@ -15,14 +15,14 @@ class m191201_134818_create_activity_table extends Migration
         $this->createTable('{{%activity}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
-            'started_at' => $this->datetime(),
-            'finished_at' => $this->datetime(),
+            'started_at' => $this->integer(),
+            'finished_at' => $this->integer(),
             'user_id' => $this->integer(),
             'description' => $this->string(1023),
             'is_repeatable' => $this->boolean(),
             'is_blocking' => $this->boolean(),
-            'created_at' => $this->datetime()->defaultExpression('now()'),
-            'updated_at' => $this->datetime(),
+            'created_at' => $this->integer()->defaultExpression('now()'),
+            'updated_at' => $this->integer(),
         ]);
     }
 
